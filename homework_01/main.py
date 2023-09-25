@@ -20,6 +20,19 @@ EVEN = "even"
 PRIME = "prime"
 
 
+def check(x):
+    count = 0
+    if x < 0:
+        return False
+    for i in range(2, (x // 2) + 1):
+        if x % i == 0:
+            count += 1
+    if count <= 0 and x != 0 and x != 1:
+        return True
+    else:
+        return False
+
+
 def filter_numbers():
     """
     функция, которая на вход принимает список из целых чисел,
