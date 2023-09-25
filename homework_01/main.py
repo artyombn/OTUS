@@ -33,7 +33,7 @@ def check(x):
         return False
 
 
-def filter_numbers():
+def filter_numbers(input_list, filter_type):
     """
     функция, которая на вход принимает список из целых чисел,
     и возвращает только чётные/нечётные/простые числа
@@ -44,3 +44,13 @@ def filter_numbers():
     >>> filter_numbers([2, 3, 4, 5], EVEN)
     <<< [2, 4]
     """
+
+    if filter_type == ODD:
+        return list(filter(lambda x: x % 2 != 0, input_list))
+    elif filter_type == EVEN:
+        return list(filter(lambda x: x % 2 == 0, input_list))
+    elif filter_type == PRIME:
+        return list(filter(check, input_list))
+    else:
+        print('No filter type')
+        return None
