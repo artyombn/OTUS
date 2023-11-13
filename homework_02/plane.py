@@ -7,8 +7,6 @@ from homework_02 import exceptions
 
 class Plane(Vehicle):
     cargo = 0
-    max_cargo = 200
-
     def __init__(self, weight, fuel, fuel_consumption, max_cargo):
         super().__init__(weight, fuel, fuel_consumption)
         self.max_cargo = max_cargo
