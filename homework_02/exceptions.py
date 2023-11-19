@@ -5,11 +5,15 @@
 - CargoOverload
 """
 
-class LowFuelError(Exception):
+class BaseException(Exception):
+    def __init__(self, message="Базовое исключение"):
+        super().__init__(message)
+
+class LowFuelError(BaseException):
     print(f'Низкий уровень топлива')
 
-class NotEnoughFuel(Exception):
+class NotEnoughFuel(BaseException):
     print(f'Недостаточный уровень топлива')
 
-class CargoOverload(Exception):
+class CargoOverload(BaseException):
     print(f'Перегрузка груза')
