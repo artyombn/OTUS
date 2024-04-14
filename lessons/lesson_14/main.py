@@ -8,6 +8,12 @@ https://gunicorn.org
 Для асинхронной работы с кодом нужно использовать uvicorn
 https://www.uvicorn.org
 
+CRUD functions for users
+Create
+Read
+Update
+Delete
+
 """
 
 __all__ = ("app",)
