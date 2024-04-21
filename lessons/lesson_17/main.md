@@ -1,7 +1,7 @@
 # SQLAlchemy ORM
 https://www.sqlalchemy.org
 
-`pip install sqlalchemy`  
+`pip install sqlalchemy`
 
 ## Psycopg3
 Библиотека для работы с БД PostgreSQL  
@@ -23,7 +23,7 @@ _Config:_
 **_Используем декларативный стиль SQL для создания таблиц  
 Наследуемся от Декларативного Базового класса_**
 
-```
+```postgresql
 class Base(DeclarativeBase):
     pass
 ```
@@ -37,14 +37,14 @@ class Base(DeclarativeBase):
 _Session в SQLAlchemy - это класс, предоставляющий средства для управления сеансами (сессиями) взаимодействия с базой данных. 
 Эта сессия будет использоваться для выполнения запросов к базе данных, добавления, изменения и удаления объектов._  
 
-```
+```postgresql
     with Session(engine) as session:
         result = session.execute(select(1))
         print(result)
 ```
 
 **_Пример создания значений в таблице Users:_**
-```
+```postgresql
 def create_user(
     session: Session,
     username: str,
@@ -61,7 +61,7 @@ _Для добавления изменений в таблицу_
 `    session.commit()`  
 
 **_Пример запроса всех полей таблицы:_**
-```
+```postgresql
 def fetch_all_users(session: Session) -> list[User]:
     stmt = select(User).order_by(User.id)
     users = session.scalars(stmt).all()
@@ -71,7 +71,7 @@ def fetch_all_users(session: Session) -> list[User]:
     return users_list  
 ```
 **_Пример запроса одного пользователя по user_id:_**
-```
+```postgresql
 def fetch_user_by_id(session: Session, user_id: int) -> User | None:
     stmt = select(User).where(User.id == user_id)
     user = session.scalar(stmt)
@@ -80,7 +80,7 @@ def fetch_user_by_id(session: Session, user_id: int) -> User | None:
 ```
 
 **_Обновление данных таблицы (на примере email)_**
-```
+```postgresql
 def update_users_emails(
     session: Session,
     username_len: int,
