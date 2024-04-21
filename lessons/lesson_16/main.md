@@ -34,7 +34,7 @@ _**Docker Compose** - файл, в котором находится струк�
 `NOT NULL` - проверка что поле не NULL  
 
 **_Создание таблицы_**  
-```
+```sql
 CREATE TABLE <table_name>
 (
     <column_1> FEATURES,
@@ -43,7 +43,7 @@ CREATE TABLE <table_name>
 );
 ```
 **_Поиск по таблице_**
-```
+```sql
 SELECT * 
 FROM <table>
 ORDER BY <column> DESC;
@@ -53,20 +53,20 @@ ORDER BY <column> DESC;
 `ORDER BY id;` - отсортировать по id (`DESC` - обратный порядок)  
 
 _**Заполнить ячейку таблицы значениями:**_  
-```
+```sql
 INSERT INTO <table>(<column1>, <column2>, ...)
 VALUES ('value1', 'value2'),
        ('value3', 'value4');
 ```
 
 **_Добавить столбец в существующую таблицу_**
-```
+```sql
 ALTER TABLE <table>
 ADD COLUMN <column_name> VARCHAR UNIQUE;
 ```
 
 **_Обновление значения ячейки_**  
-```
+```sql
 UPDATE <table>
 SET <column_name> = 'new_value'
 WHERE <column_name> = 'key';
@@ -78,7 +78,7 @@ WHERE <column_name> = 'key';
 `count(<table>.<column>) "new_column_name"` - посчитать кол-во совпадений  
 
 _**Фильтрация:**_  
-```
+```sql
 WHERE <column_name> ilike '%rambler.%'
 ORDER BY id;
 ```
@@ -87,7 +87,7 @@ ORDER BY id;
 
 **_Создать связь одной таблицы с другой_**  
 _Например, связь по id_
-```
+```sql
 CREATE TABLE <table_1>
 (
     <column_1> SERIAL PRIMARY KEY,
@@ -108,20 +108,20 @@ _*Показывает ограничение, то есть `<column_for_bindin
   
 
 **_Показать значения первой таблицы, объединив с определенными колонками второй_**  
-```
+```sql
 SELECT *
 FROM <table_1> t1
 JOIN <table_2> t2 ON t1.<column1> = t2.<column2>;
 ```
 _Пример:_
-```
+```sql
 SELECT *
 FROM posts p
 JOIN autors a ON a.id = p.autor_id;
 ```
 
 _GROUP BY & count()_
-```
+```sql
 SELECT a.id, a.username, count(p.id) "posts-count"
 FROM autors a
 JOIN posts p ON a.id = p.autor_id
