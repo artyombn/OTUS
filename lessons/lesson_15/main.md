@@ -59,6 +59,9 @@ _https://hub.docker.com_
 `docker start 5cd994bf719e -i` - запустить определенный контейнер  
 `docker run -it python bash` - контейнер с python
 
+`docker stop $(docker ps -aq)` - остановить все запущенные контейнеры  
+
+
 ## Dockerfile
 В Dockerfile сверху прописываем то, что используем/меняем редко, а снизу то, что меняем быстро и часто
 Чтение идет сверху вниз (в случае отсутствия изменений, чтение будет только того, что изменилось. неизмененные данные берутся из кеша)
@@ -67,4 +70,6 @@ _https://hub.docker.com_
 `docker run -it <image_name>`- запустить контейнер
 `docker run -p <HOST_PORT>:<CONTAINER_PORT> -it <name>`- запустить контейнер  
 пример: `docker run -p 8000:8000 -it web`
+
+
 
