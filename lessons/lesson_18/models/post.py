@@ -9,6 +9,7 @@ from sqlalchemy import (
     Text,
     func,
 )
+from sqlalchemy.orm import relationship
 
 from lessons.lesson_18.models.base import Base
 
@@ -42,6 +43,15 @@ class Post(Base):
         ForeignKey("users.id"),  # путь до колонки в табличке users(User)
         unique=False,  # у одного юзера может быть много постов
         nullable=False,  # чтобы не было поста без user
+    )
+
+    author = relationship(
+        # to class name
+        "User",
+        # how to access to this model[s]: user.'posts'
+        back_populates="posts",
+        # author can be only one due to single 'user_id'
+        uselist=False,  # 1 пост = 1 пользователь, каждый пост может быть создан только 1 пользователем
     )
 
     def __repr__(self):

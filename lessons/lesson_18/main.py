@@ -3,7 +3,7 @@ from sqlalchemy import update
 from sqlalchemy import func
 from sqlalchemy import text
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from lessons.lesson_18.models.user import User
 from lessons.lesson_18.models.base import Base
@@ -147,9 +147,26 @@ def fetch_post_for_user_id(session: Session, user_id: int) -> list[Post]:
     return posts
 
 
+def fetch_users_with_posts(
+    session: Session,
+) -> list[User]:
+    stmt = select(User).options(joinedload(User.posts)).order_by(User.id)
+    users = session.scalars(stmt)
+    return users.unique().all()
+
+
+def fetch_post_with_authors(
+    session: Session,
+) -> list[Post]:
+    stmt = select(Post).options(joinedload(Post.author)).order_by(Post.id)
+    posts = session.scalars(stmt)
+    return posts.all()
+
+
 def demo(session: Session):
     # user_john = create_user(session, username="John")
     # user_sam = create_user(session, username="Sam")
+    # user_nick = create_user(session, username="Nick")
     #
     # create_post(session, title="Intro Lesson", user_id=user_john.id)
     # create_several_posts(
@@ -159,14 +176,25 @@ def demo(session: Session):
     #     "Postgres Lesson",
     #     user_id=user_sam.id,
     # )
-    for user_id in (0, 1, 2, 3):
-        posts = fetch_post_for_user_id(session, user_id)
-        if not posts:
-            print("-- no posts for user:", user_id)
-            continue
-        print(f"++ user id = {user_id}, posts {len(posts)}:")
-        for post in posts:
-            print("-", post)
+    # ---------------------------------------------
+    # for user_id in (0, 1, 2, 3):
+    #     posts = fetch_post_for_user_id(session, user_id)
+    #     if not posts:
+    #         print("-- no posts for user:", user_id)
+    #         continue
+    #     print(f"++ user id = {user_id}, posts {len(posts)}:")
+    #     for post in posts:
+    #         print("-", post)
+    # ---------------------------------------------
+    # users_with_posts = fetch_users_with_posts(session)
+    # for user in users_with_posts:
+    #     print("++ posts for user", user)
+    #     for post in user.posts:
+    #         print("-", post)
+    # ---------------------------------------------
+    post_with_authors = fetch_post_with_authors(session)
+    for post in post_with_authors:
+        print("post", (post.id, post.title), "author", post.author)
 
 
 def main():

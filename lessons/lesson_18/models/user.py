@@ -3,6 +3,7 @@ from sqlalchemy import (
     Integer,
     String,
 )
+from sqlalchemy.orm import relationship
 
 from lessons.lesson_18.models.base import Base
 
@@ -20,6 +21,15 @@ class User(Base):
         String,
         nullable=True,
         unique=True,
+    )
+
+    posts = relationship(
+        # to class name
+        "Post",
+        # how to access to this model[s]: post.'author'
+        back_populates="author",
+        # user can have any number of posts
+        uselist=True,
     )
 
     def __repr__(self):
