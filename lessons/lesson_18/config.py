@@ -10,5 +10,5 @@ DB_URL = (
     f"postgresql+{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 
-# DB_ECHO = False
-DB_ECHO = True  # для отладки
+DB_ECHO = False
+# DB_ECHO = True  # для отладки (чтобы показать сам SQL запрос, который генерируется)

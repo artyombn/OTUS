@@ -43,3 +43,17 @@ class Post(Base):
         unique=False,  # у одного юзера может быть много постов
         nullable=False,  # чтобы не было поста без user
     )
+
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return (
+            f"{self.__class__.__name__}("
+            f"id={self.id}, "
+            f"title={self.title!r}, "
+            f"body={self.body!r}), "
+            f"published_at={self.published_at}), "
+            f"user_id={self.user_id}), "
+            f")"
+        )
