@@ -1,0 +1,18 @@
+CREATE TABLE users (
+	username VARCHAR(32) NOT NULL,
+	email VARCHAR,
+	id SERIAL NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE (username),
+	UNIQUE (email)
+);
+
+CREATE TABLE posts (
+	title VARCHAR(100) DEFAULT '' NOT NULL,
+	body TEXT DEFAULT '',
+	published_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+	user_id INTEGER NOT NULL,
+	id SERIAL NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(user_id) REFERENCES users (id)
+);
