@@ -53,6 +53,19 @@ target_metadata = Base.metadata
 `alembic revision --autogenerate` - сгенерировать новую ревизию (миграцию)  
 `alembic revision --autogenerate -m "new migration"` - сгенерировать с сообщением  
 
-`alembic upgrade head` - применить миграцию и перейти на 1 уровень дальше  
+`alembic upgrade head` - применить миграцию и перейти к самой последней миграции (подняться на самый верх)
+`alembic upgrade <revision>` - перейти к определенной ревизии, которая стоит выше 
 `alembic downgrade -1` - откатиться на 1 уровень  
+`alembic downgrade <revision>` - откатиться к определенной ревизии   
+
+_**Для добавления SQL кода в миграцию**_
+```python
+    op.execute("""
+        SQL code
+    """)
+```
+
+`alembic upgrade --sql <revision from>:<revision to>` - переход между миграциями  
+_Пример_  
+`alembic upgrade --sql 2e236a355b95:e59d20cf08db`  
 

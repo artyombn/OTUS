@@ -17,10 +17,35 @@ down_revision: Union[str, None] = "e59d20cf08db"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
+table_name = "posts"
+
 
 def upgrade() -> None:
+
+    # Использование SQL кода в миграции
+    # op.execute(
+    #     """
+    #     UPDATE posts
+    #     SET title = substring(title, 0, 81)
+    #     WHERE lenght(title) > 80
+    # """
+    # )
+
+    metadata = sa.MetaData()
+    metadata.reflect(
+        bind=op.get_bind()
+    )  # отображение структуры БД. сканирует БД и создает объекты SQLAlchemy
+
+    table_posts = metadata.tables[table_name]
+    stmt = (
+        sa.update(table_posts)
+        .where(sa.func.length(table_posts.c.title) > 80)
+        .values({table_posts.c.title: sa.func.substring(table_posts.c.title, 0, 81)})
+    )
+    op.execute(stmt)
+
     op.alter_column(
-        "posts",
+        table_name,
         "title",
         existing_type=sa.VARCHAR(length=100),
         type_=sa.String(length=80),
@@ -31,7 +56,7 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.alter_column(
-        "posts",
+        table_name,
         "title",
         existing_type=sa.String(length=80),
         type_=sa.VARCHAR(length=100),
