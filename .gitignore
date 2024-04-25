@@ -1,6 +1,7 @@
 # IDEs
 .idea/
 
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -142,3 +143,4 @@ cython_debug/
 
 # Extra docs
 lessons/test.py
+.DS_Store
