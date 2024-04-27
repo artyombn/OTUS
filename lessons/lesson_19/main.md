@@ -69,3 +69,4 @@ _**Для добавления SQL кода в миграцию**_
 _Пример_  
 `alembic upgrade --sql 2e236a355b95:e59d20cf08db`  
 
+`alembic downgrade base` - откат всех миграций
