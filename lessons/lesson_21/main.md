@@ -24,3 +24,43 @@ _Вызов асинхронной ф-ции:_
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+**_Карутина (coroutine)_** - специальный вид функции в Async, который может приостанавливаться и возобновляться в процессе выполнения без блокировки потока. 
+Используются для организации параллельного выполнения нескольких асинхронных операций.
+
+_Пример_
+```python
+res = await asyncio.gather(
+    get_weather(),
+    coro_currencies,
+)
+```
+
+❗️В асинхронных функциях никогда не используем синхронный код (обычный sleep, with open ...)
+
+Выставляем максимальное время выполнения нескольких асинк операций
+Если выполнение операций занимает больше 3 секунд - выбрасывает asyncio.TimeoutError
+```python
+    async with asyncio.timeout(3):
+        res = await asyncio.gather(
+            get_weather(),
+            coro_currencies,
+        )
+```  
+*gather() устаревший подход, лучше использовать TaskGroup() в качестве контекстного менеджера
+
+**_Как работать с файлами в асинхронном подходе_**  
+_https://www.google.com/search?client=safari&rls=en&q=aiofiles&ie=UTF-8&oe=UTF-8_
+
+```python
+    async with asyncio.TaskGroup() as tg:
+        task_get_weather = tg.create_task(get_weather())
+        task_get_currencies = tg.create_task(coro_currencies)
+
+    res_weather = task_get_weather.result()
+    res_currencies = task_get_currencies.result()
+```
+Сначала выполнение всего, что в TaskGroup() и только потом остальной код
+
+f-строчки НЕ ИСПОЛЬЗУЕМ в асинхронном подходе, так как они требуют время для форматирования
+Также может быть разный уровень логирования и мы делаем форматирование того, что не нужно форматировать
