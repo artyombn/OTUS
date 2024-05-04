@@ -13,6 +13,7 @@ from models.base import Base
 from models.post import Post
 from models.tag import Tag
 from models.db import async_session
+from models.db import async_engine
 
 
 async def create_user(
@@ -35,7 +36,7 @@ async def create_post(
     title: str,
     user_id: int,
 ) -> Post:
-    post = Post(title="", user_id=user_id)
+    post = Post(title=title, user_id=user_id)
     session.add(post)
     await session.commit()
     print("created_post:", post)
@@ -78,9 +79,11 @@ async def fetch_all_users(session: AsyncSession) -> list[User]:
     return users_list
 
 
-def fetch_user_by_id(session: Session, user_id: int) -> User | None:
-    stmt = select(User).where(User.id == user_id)
-    user = session.scalar(stmt)
+async def fetch_user_by_id(session: AsyncSession, user_id: int) -> User | None:
+    # stmt = select(User).where(User.id == user_id)
+    # user = session.scalar(stmt)
+    user: User | None = await session.get(User, user_id)
+    await session.refresh(user)
     print()
     print("User:", user)
     print()
@@ -121,10 +124,10 @@ def update_users_emails(
     session.commit()
 
 
-def fetch_all_posts(session: Session) -> list[Post]:
+async def fetch_all_posts(session: AsyncSession) -> list[Post]:
     stmt = select(Post).order_by(Post.id)
-    posts = session.scalars(stmt)
-    return posts.all()
+    result = await session.scalars(stmt)
+    return result.all()
 
 
 def fetch_user_for_domain(session: Session, domain: str) -> list[User]:
@@ -134,18 +137,18 @@ def fetch_user_for_domain(session: Session, domain: str) -> list[User]:
     return users
 
 
-def fetch_post_for_user_id(session: Session, user_id: int) -> list[Post]:
+async def fetch_post_for_user_id(session: AsyncSession, user_id: int) -> list[Post]:
     stmt = select(Post).where(Post.user_id == user_id).order_by(Post.id)
-    posts = session.scalars(stmt).all()
-    return posts
+    posts = await session.scalars(stmt)
+    return posts.all()
 
 
-def fetch_users_with_posts(
-    session: Session,
+async def fetch_users_with_posts(
+    session: AsyncSession,
 ) -> list[User]:
-    stmt = select(User).options(joinedload(User.posts)).order_by(User.id)
-    users = session.scalars(stmt)
-    return users.unique().all()
+    stmt = select(User).options(selectinload(User.posts)).order_by(User.id)
+    users = await session.scalars(stmt)
+    return users.all()
 
 
 def fetch_post_with_authors(
@@ -265,23 +268,28 @@ def get_users_with_posts_with_tag_using_subquery(
     return users
 
 
-async def demo(session: AsyncSession):
-    user_john: User = await create_user(
-        session, username="John", refresh_after_commit=True
-    )
-    user_sam: User = await create_user(session, username="Sam")
-    user_nick: User = await create_user(session, username="Nick")
+async def demo(session: AsyncSession) -> None:
+    # user_john: User = await create_user(
+    #     session, username="John", refresh_after_commit=True
+    # )
+    # user_sam: User = await create_user(session, username="Sam")
+    # user_nick: User = await create_user(session, username="Nick")
+    #
+    # # await fetch_all_users(session)
+    # #
+    # await create_post(session, title="Intro Lesson", user_id=user_john.id)
+    # await create_several_posts(
+    #     session,
+    #     "SQL Introduction",
+    #     "SQL Transactions",
+    #     user_id=user_john.id,
+    # )
+    #
 
-    # await fetch_all_users(session)
-    #
-    await create_post(session, title="Intro Lesson", user_id=user_john.id)
-    await create_several_posts(
-        session,
-        "SQL Introduction",
-        "SQL Transactions",
-        user_id=user_john.id,
-    )
-    #
+    user_1: User | None = await fetch_user_by_id(session, 1)
+    user_2: User | None = await fetch_user_by_id(session, 2)
+    user_10: User | None = await fetch_user_by_id(session, 10)
+
     # user_bob = create_user(session, username="bob")
     # user_alice = create_user(session, username="alice")
     # create_several_posts(
