@@ -11,7 +11,18 @@ _https://httpie.io_
 Позволяет создавать асинхронные веб-серверы, клиенты и веб-приложения
 _https://docs.aiohttp.org/en/stable/_
 
-`pip install aiohttp`  
+`pip install aiohttp`
+
+`asyncpgsa` - связка asyncpg движка и alchemy, но только в core режиме
+_https://github.com/CanopyTax/asyncpgsa_
+
+Для работы Alchemy с Async _(добавляем через poetry, файл pyproject.toml)_:  
+`poetry add aiohttp`  
+`poetry add "sqlalchemy[asyncio]"`  
+`poetry add asyncpg`  
+
+
+`alembic init -t async alembic` - сделать асинхронный alembic  
 
 
 
