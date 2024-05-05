@@ -1,0 +1,79 @@
+from datetime import datetime
+
+from sqlalchemy import (
+    Column,
+    Integer,
+    ForeignKey,
+    String,
+    DateTime,
+    Text,
+    func,
+)
+from sqlalchemy.orm import relationship
+
+from .base import Base
+from .posts_tags_association import posts_tags_association_table
+
+
+class Post(Base):
+    # __tablename__ = "posts" // @declared_attr используется в base.py
+    # id = Column(Integer, primary_key=True) // наследуем из базового класса
+
+    title = Column(
+        String(80),
+        nullable=False,
+        default="",  # определяет дефолтное значение в случае если для столбца оно не указано (используется чисто в алхимии)
+        server_default="",  # определяет дефолтное значение на стороне БД, а не Python кода
+        # предпочтительно использовать тогда, когда значение по умолчанию определяется лучше на стороне БД, чем на стороне Python-кода
+    )
+    body = Column(
+        Text,
+        default="",
+        server_default="",
+    )
+
+    published_at = Column(
+        DateTime(timezone=False),
+        nullable=False,
+        default=datetime.utcnow,
+        server_default=func.now(),
+    )
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id"),  # путь до колонки в табличке users(User)
+        unique=False,  # у одного юзера может быть много постов
+        nullable=False,  # чтобы не было поста без user
+    )
+
+    author = relationship(
+        # to class name
+        "User",
+        # how to access to this model[s]: user.'posts'
+        back_populates="posts",
+        # author can be only one due to single 'user_id'
+        uselist=False,  # 1 пост = 1 пользователь, каждый пост может быть создан только 1 пользователем
+    )
+
+    tags = relationship(
+        # to tags (class name Tag)
+        "Tag",
+        # through this table
+        secondary=posts_tags_association_table,
+        # access this object through tag.posts
+        back_populates="posts",
+    )
+
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return (
+            f"{self.__class__.__name__}("
+            f"id={self.id}, "
+            f"title={self.title!r}, "
+            f"body={self.body!r}), "
+            f"published_at={self.published_at}), "
+            f"user_id={self.user_id}), "
+            f")"
+        )
