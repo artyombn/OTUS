@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 
 from views.hello import router as router_hello
 from views.items import router as router_items
-from views.users.crud import router as router_users
+from views.users import router as router_users
 
 app = FastAPI()
 app.include_router(router_hello)

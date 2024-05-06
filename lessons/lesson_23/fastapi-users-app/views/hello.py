@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 router = APIRouter(
     prefix="/hello",
-    tags=["hello user"],
+    tags=["Hello user"],
 )
 
 
