@@ -8,12 +8,14 @@ Delete
 """
 
 from dataclasses import dataclass, field
+from random import randint
 
 
+@dataclass
 class Product:
     id: int
     name: str
-    # price: int
+    price: int
 
 
 @dataclass
@@ -26,10 +28,11 @@ class ProductsStorage:
         self.last_id += 1
         return self.last_id
 
-    def create(self, name: str) -> Product:
+    def create(self, name: str, price: int | None = None) -> Product:
         product = Product(
             id=self.next_id,
             name=name,
+            price=price or randint(10, 1000),
         )
         self.products[product.id] = product
         return product

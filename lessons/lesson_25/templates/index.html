@@ -6,4 +6,19 @@
 
 {% block body %}
 	<h1>Hello World!</h1>
+
+    {# Test comment #1 ->
+    it is hidden comment from web #}
+
+    <!-- Test comment #2 -> this comment is shown on web -->
+
+    <h3>Special chars:</h3>
+    <!-- Чтобы отображать спец. символы без изменений -->
+    <pre>
+    {% raw %}
+        {# Hello jinja comment #}
+        {{  }}
+    {% endraw %}
+    </pre>
+
 {% endblock %}

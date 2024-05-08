@@ -5,9 +5,11 @@ from flask import (
 )
 
 from views.items import items_app
+from views.products.views import products_app
 
 app = Flask(__name__)
 app.register_blueprint(items_app)
+app.register_blueprint(products_app)
 
 
 @app.get("/")
