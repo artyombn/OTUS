@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            Base Title
+        {% endblock %}
+    </title>
+</head>
+<body>
+{# Будет переопределен блоком в index.html #}
+{% block body %}
+    Base body
+{% endblock %}
+<footer>
+    &copy; OTUS 2024
+</footer>
+
+</body>
+</html>

@@ -1,11 +1,18 @@
-from flask import Flask, request
+from flask import (
+    Flask,
+    request,
+    render_template,
+)
+
+from views.items import items_app
 
 app = Flask(__name__)
+app.register_blueprint(items_app)
 
 
 @app.get("/")
 def hello_world():
-    return "<h1>Hello World</h1>"
+    return render_template("index.html")
 
 
 # # Вытаскиваем параметры через request.args (аргументы-параметры query string - параметры URL запроса)
