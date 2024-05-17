@@ -37,6 +37,10 @@ h1.green-text {
     margin-top: 100px;
 }
 
+.margin-top-small {
+    margin-top: 50px;
+}
+
 .margin-left {
     margin-left: 10px;
 }
