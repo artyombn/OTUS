@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+
+{% block title %}
+    Index page
+{% endblock %}
+
+{% block body %}
+	<h1>Hello World!</h1>
+
+    {# Test comment #1 ->
+    it is hidden comment from web #}
+
+    <!-- Test comment #2 -> this comment is shown on web -->
+
+    <h3>Special chars:</h3>
+    <!-- Чтобы отображать спец. символы без изменений -->
+    <pre>
+    {% raw %}
+        {# Hello jinja comment #}
+        {{  }}
+    {% endraw %}
+    </pre>
+    <hr>
+
+    <h3>This is Clicker</h3>
+    <p>Clicked times: <span id="click-count">0</span></p>
+
+    <button class="button-56" role="button">Click me!</button>
+
+
+
+{% endblock %}
