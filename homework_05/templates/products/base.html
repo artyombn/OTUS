@@ -17,26 +17,17 @@
 </head>
 <body>
 
-    <div
-        class="main-content"
-        style="font-family: 'Bradley Hand', serif;
-        font-size: 30px;
-        background-color: #75b798;"
-    >
-
     {% include "navbar/navbar.html" %}
 
     <div class="mt-3">
 
-        {% block body %}
-        {% endblock %}
+    {% block body %}
+    {% endblock %}
 
-        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}">
 
-        </script>
+    </script>
 
     </div>
-    </div>
-
 </body>
 </html>

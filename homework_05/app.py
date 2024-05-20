@@ -29,5 +29,10 @@ def about():
     return render_template("about.html")
 
 
+@app.get("/products/", endpoint="products")
+def products():
+    return render_template("products/products.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
