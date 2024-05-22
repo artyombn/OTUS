@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    >
+
+</head>
+<body>
+
+    <div
+        class="main-content"
+        style="font-family: 'Bradley Hand', serif;
+        font-size: 30px;
+        background-color: #75b798;"
+    >
+
+    {% include "navbar/navbar.html" %}
+
+    <div class="mt-3">
+
+        {% block body %}
+        {% endblock %}
+
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}">
+
+        </script>
+
+    </div>
+    </div>
+
+</body>
+</html>
