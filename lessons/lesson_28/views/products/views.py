@@ -1,19 +1,20 @@
-from urllib import request
-
 from flask import (
     Blueprint,
     render_template,
     request,
     url_for,
     redirect,
+    flash,
 )
-
-from lessons.lesson_26.views.products.crud import products_storage as storage
 
 from werkzeug.exceptions import (
     NotFound,
     BadRequest,
 )
+
+from lessons.lesson_28.models import Product
+from lessons.lesson_28.views.products.crud import products_storage as storage
+
 
 products_app = Blueprint(
     "products_app",
@@ -40,16 +41,15 @@ def add_product():
     product_name = product_name.strip()
     if not product_name:
         raise BadRequest("Product name is required")
-    product = storage.create(name=product_name)
+    product: Product = storage.create(name=product_name)
     url = url_for("products_app.details", product_id=product.id)
     return redirect(url)
 
 
 @products_app.get("/<int:product_id>/", endpoint="details")
 def get_product(product_id: int):
-    product = storage.get_by_id(product_id)
-    if product is None:
-        raise NotFound(f"Product with id #{product_id} not found")
+    product: Product = storage.get_or_404(product_id=product_id)
+
     return render_template(
         "products/details.html",
         product=product,
