@@ -144,4 +144,5 @@ cython_debug/
 # Extra docs
 lessons/test.py
 .DS_Store
-homework_05/.python-version
+.python-version
+.__init__.py
