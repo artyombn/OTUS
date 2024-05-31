@@ -17,4 +17,7 @@ _https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu
 **_uwsgi-nginx-flask-docker_**  
 _https://github.com/tiangolo/uwsgi-nginx-flask-docker_
 
+Dockerfile-local - обычный docker file
+Dockerfile - наследуемый от tiangolo/uwsgi-flask
+* этот Dockerfile запускает внутри себя prestart.sh
 

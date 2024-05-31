@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+
+  pg:
+    image: postgres
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    networks:
+      - app-network
+
+  flask-app:
+    build: .
+    environment:
+      FLASK_ENV: development
+      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://user:example@pg:5432/blog"
+    ports:
+      - "5001:5000"
+    depends_on:
+      - pg
+    networks:
+      - app-network
+    command: ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+
+networks:
+  app-network:

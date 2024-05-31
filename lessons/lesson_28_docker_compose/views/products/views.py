@@ -12,8 +12,8 @@ from werkzeug.exceptions import (
     BadRequest,
 )
 
-from lessons.lesson_28.models.product import Product
-from lessons.lesson_28.views.products.crud import products_storage as storage
+from app.models.product import Product
+from app.views.products.crud import products_storage as storage
 
 
 products_app = Blueprint(

@@ -1,3 +1,4 @@
+import os
 from flask import (
     Flask,
     request,
@@ -5,21 +6,19 @@ from flask import (
 )
 from flask_migrate import Migrate
 
-from lessons.lesson_28.models.database import db
-from lessons.lesson_28.views.items import items_app
-from lessons.lesson_28.views.products.views import products_app
+from app.models.database import db
+from app.views.items import items_app
+from app.views.products.views import products_app
 
 print("Создание приложения Flask")
 app = Flask(__name__)
 app.config.update(
-    SECRET_KEY="616b2180ee260174500b1042c648dff4fe3476137dd0c7b32792a9f8efb1c3b5",
-    SQLALCHEMY_DATABASE_URI="postgresql+psycopg://user:example@localhost:5432/blog",
+    SQLALCHEMY_DATABASE_URI=os.getenv(
+        "SQLALCHEMY_DATABASE_URI", "postgresql+psycopg2://user:example@pg:5432/blog"
+    ),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
     SQLALCHEMY_ECHO=True,
 )
-
-print("Регистрация блюпринтов")
-app.register_blueprint(items_app)
-app.register_blueprint(products_app)
 
 print("Инициализация базы данных")
 db.init_app(app)
@@ -27,9 +26,13 @@ db.init_app(app)
 print("Настройка миграций")
 migrate = Migrate(app, db)
 
-# with app.app_context():
-#     # db.create_all()
-#     migrate.init_app(app, db)
+print("Регистрация блюпринтов")
+app.register_blueprint(items_app)
+app.register_blueprint(products_app)
+
+with app.app_context():
+    # db.create_all()
+    migrate.init_app(app, db)
 
 
 @app.get("/", endpoint="index")
