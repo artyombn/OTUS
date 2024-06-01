@@ -13,8 +13,8 @@ from werkzeug.exceptions import (
     BadRequest,
 )
 
-from app.models.product import Product
-from app.views.products.crud import products_storage as storage
+from models.product import Product
+from views.products.crud import products_storage as storage
 
 
 products_app = Blueprint(

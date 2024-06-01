@@ -12,7 +12,7 @@ from random import randint
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 
-from app.models import (
+from models import (
     Product,
     db as main_sqla_db,
 )

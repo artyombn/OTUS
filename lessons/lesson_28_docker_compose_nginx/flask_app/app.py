@@ -6,14 +6,15 @@ from flask import (
 )
 from flask_migrate import Migrate
 
-from app.models.database import db
-from app.views.items import items_app
-from app.views.products.views import products_app
+from models.database import db
+from views.items import items_app
+from views.products.views import products_app
 
 print("Создание приложения Flask")
 app = Flask(__name__)
+
 app.config.update(
-    SECRET_KEY="616b2180ee260174500b1042c64",  # для Flask message flesh
+    SECRET_KEY="616b2180ee260174500b1042c64",  # для Flask message flash
     SQLALCHEMY_DATABASE_URI=os.getenv(
         "SQLALCHEMY_DATABASE_URI", "postgresql+psycopg2://user:example@pg:5432/blog"
     ),
