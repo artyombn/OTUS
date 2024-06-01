@@ -4,12 +4,28 @@
     Product list
 {% endblock %}
 
+{% block messages %}
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="alert alert-info" role="alert">
+                You added {{ message }} last time
+            </div>
+        {% endfor %}
+    {% endwith %}
+    {% if session['last_product_name'] %}
+        <div class="alert alert-info" role="alert">
+            You added {{ session['last_product_name'] }} last time
+        </div>
+        {% set _ = session.pop('last_product_name') %}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <h1>Products</h1>
     <div class="row">
-
         <div class="col-12 col-sm-6 col-lg-8">
             <div class="list-group">
+
                 {% for product in products %}
                     {# Show name of product #}
         {#            <li>{{ product.name }}</li>#}
@@ -35,12 +51,6 @@
         </div>
     </div>
 
-    <div>
-        <a
-            class="btn btn-info"
-            href="{{ url_for('products_app.add') }}">
-            Add a new product</a>
-    </div>
-
+{% include 'products/components/add-new-product.html' %}
 {% include 'products/components/back-to-the-main.html' %}
 {% endblock %}

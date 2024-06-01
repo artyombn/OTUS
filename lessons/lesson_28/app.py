@@ -12,7 +12,7 @@ from lessons.lesson_28.views.products.views import products_app
 print("Создание приложения Flask")
 app = Flask(__name__)
 app.config.update(
-    SECRET_KEY="616b2180ee260174500b1042c648dff4fe3476137dd0c7b32792a9f8efb1c3b5",
+    SECRET_KEY="616b2180ee260174500b1042c64",  # для Flask message flesh
     SQLALCHEMY_DATABASE_URI="postgresql+psycopg://user:example@localhost:5432/blog",
     SQLALCHEMY_ECHO=True,
 )

@@ -50,7 +50,7 @@ class ProductsStorage:
     def delete(self, product: Product) -> None:
         self.db.session.delete(product)
         self.db.session.commit()
-        return "Product deleted"
+        # Product.query.filter_by(id=product.id).delete()
 
 
 products_storage = ProductsStorage(db=main_sqla_db)

@@ -45,3 +45,23 @@ migrate = Migrate(app, db)
 `flask db init`   
 `flask db migrate -m "create products table"` - сделать миграцию  
 `flask db upgrade` - применить миграцию  
+
+
+flask message flash  
+_https://flask.palletsprojects.com/en/3.0.x/patterns/flashing/_
+
+layout.html c alerts из bootstrap
+```python
+{% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="alert alert-primary" role="alert">
+                A simple primary alert—check it out!
+            </div>
+        {% endfor %}
+    {% endwith %}
+```
+
+`flash(f"Product {product_name} added successfully")` - добавление флеша в функцию создания  
+
+Для валидации, что существует такой товар:
+_https://flask-wtf.readthedocs.io/en/1.2.x/quickstart/_

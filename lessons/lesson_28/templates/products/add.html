@@ -7,18 +7,20 @@
 {% block body %}
     <h1>Create a new product</h1>
     <form method="post">
-    <label for = "product-name-id">Product name</label>
+    <label class="form-label" for = "product-name-id">Product name</label>
 
     <input
             type="text"
+            class="form-control"
             id="product-name-id"
             name="product-name"
             placeholder="Desktop"
             required
     >
     <input
+            class="btn btn-primary my-2"
             type="submit"
-            value="Add">
+            value="Add product">
     </form>
     <hr>
 
