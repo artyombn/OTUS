@@ -14,7 +14,7 @@ RUN poetry install
 
 COPY ./build/prestart.sh /prestart.sh
 
-COPY ../flask_app/ ./
+COPY ../app/ ./
 
 EXPOSE 5000
 

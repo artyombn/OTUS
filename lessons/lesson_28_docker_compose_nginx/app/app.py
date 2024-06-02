@@ -33,7 +33,7 @@ app.register_blueprint(items_app)
 app.register_blueprint(products_app)
 
 with app.app_context():
-    db.create_all()
+    # db.create_all()
     migrate.init_app(app, db)
 
 
@@ -54,4 +54,4 @@ def hello_name(name=None):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
