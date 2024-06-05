@@ -30,8 +30,9 @@ class Animal(models.Model):
     food = models.ManyToManyField(Food)
 
     def __str__(self):
+        # return self.name
         food_list = ", ".join([food.name for food in self.food.all()])
-        return f"{self.name} -- {self.category.name} -- {food_list}"
+        return f"{self.name} -- {self.category.name} -- {self.age} -- {food_list}"
 
 
 class Card(models.Model):
