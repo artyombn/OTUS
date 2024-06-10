@@ -3,21 +3,27 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from .tasks import send_admin_message
 from celery.result import AsyncResult
+from .forms import ContactForm
 
 
 # Create your views here.
 def contact_view(request):
     if request.method == "POST":
+        form = ContactForm(data=request.POST)
         # send_admin_message()  # simple call
-        task_result = send_admin_message.delay(message="New message")
-        print(type(task_result))
-        print(task_result)
+        if form.is_valid():
+            message = form.cleaned_data["message"]
+            task_result = send_admin_message.delay(message=message)
+            print(type(task_result))
+            print(task_result)
 
-        print(task_result.ready())
-        print(task_result.state)
+            print(task_result.ready())
+            print(task_result.state)
 
-        return HttpResponseRedirect("/contacts/")
-    return render(request, "contacts/contacts.html")
+            return HttpResponseRedirect("/contacts/")
+
+    form = ContactForm()
+    return render(request, "contacts/contacts.html", {"form": form})
 
 
 # Для проверки статуса в live режиме

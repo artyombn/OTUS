@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from .forms import AnimalForm
 
 from .models import Animal
 from django.views.generic import (
@@ -28,7 +29,7 @@ class AnimalDetailView(DetailView):
 
 class AnimalCreateView(CreateView):
     model = Animal
-    fields = "__all__"
+    form_class = AnimalForm
     success_url = reverse_lazy("animals:list")
 
 
