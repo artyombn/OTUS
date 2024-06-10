@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object.name }}
+{%  endblock %}
+
+{% block body %}
+    <a href="{% url 'animals:update' pk=animal.pk %}">update</a>
+    <br>
+    <a href="{% url 'animals:delete' pk=animal.pk %}">delete</a>
+
+    <h1>Object name: {{ object.name }} ({{ object.id }})</h1>
+    <h2>Category: {{ object.category }}</h2>
+    <h2>Age: {{ object.age }}</h2>
+{% endblock %}

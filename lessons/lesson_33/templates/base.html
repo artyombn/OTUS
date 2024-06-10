@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            Zoo
+        {% endblock %}
+    </title>
+</head>
+<body>
+
+<ul>
+    <li>
+        <a href="{% url 'animals:index' %}">Index</a>
+    </li>
+    <li>
+        <a href="{% url 'animals:list' %}">Animal List</a>
+    </li>
+
+    <li>
+        <a href="{% url 'animals:create' %}">Create</a>
+    </li>
+    <br>
+</ul>
+
+{% block body %}
+{% endblock %}
+
+</body>
+</html>

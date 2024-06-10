@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete {{ object.name }}
+{%  endblock %}
+
+{% block body %}
+
+Do you want to delete this animal?
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes</button>
+</form>
+
+    <h1>Object name: {{ object.name }} ({{ object.id }})</h1>
+    <h2>Category: {{ object.category }}</h2>
+    <h2>Age: {{ object.age }}</h2>
+
+{% endblock %}
