@@ -27,7 +27,7 @@ class Post(Base):
         nullable=False,
     )
 
-    author = relationship(
+    user = relationship(
         # to class name
         "User",
         # how to access to this model[s]: user.`posts`

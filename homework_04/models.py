@@ -10,6 +10,8 @@
 
 import os
 
+from models_p.user import User
+from models_p.post import Post
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 PG_CONN_URI = (

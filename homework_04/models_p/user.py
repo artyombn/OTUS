@@ -16,8 +16,8 @@ class User(Base):
     posts = relationship(
         # to class name
         "Post",
-        # how to access to this model[s]: post.`author`
-        back_populates="author",
+        # how to access to this model[s]: post.`user`
+        back_populates="user",
         # user can have any number of posts
         uselist=True,
     )
