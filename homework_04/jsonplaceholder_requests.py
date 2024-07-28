@@ -7,7 +7,7 @@ import logging
 
 import aiohttp
 
-from homework_04.common import configure_logging
+from common import configure_logging
 
 log = logging.getLogger(__name__)
 
@@ -22,33 +22,44 @@ async def fetch_json(url: str) -> dict:
             return await response.json()
 
 
-async def fetch_user_by_id(users, user_id) -> list:
+async def fetch_users_data(url: str = USERS_DATA_URL) -> list[dict]:
+    return await fetch_json(url)
+
+
+async def fetch_posts_data(url: str = POSTS_DATA_URL) -> list[dict]:
+    return await fetch_json(url)
+
+
+async def fetch_user_by_id(users, user_id) -> dict:
     for user in users:
         if user["id"] == user_id:
             return user
     return None
 
 
-async def fetch_post_by_user_id(posts, user_id) -> list:
-    for post in posts:
-        if post["userId"] == user_id:
-            return post
-    return None
+async def fetch_posts_by_user_id(posts, user_id) -> list:
+    return [post for post in posts if post["userId"] == user_id]
 
 
 async def main():
     configure_logging()
-    async with asyncio.TaskGroup() as tg:
-        task1 = tg.create_task(fetch_json(USERS_DATA_URL))
-        task2 = tg.create_task(fetch_json(POSTS_DATA_URL))
-    users = task1.result()
-    posts = task2.result()
-    # log.info("Fetching users data: %s", users)
-    # log.info("Fetching posts data: %s", posts)
-    get_user = await fetch_user_by_id(users, USER_ID)
-    get_post = await fetch_post_by_user_id(posts, USER_ID)
-    log.info("Fetching user data by User id: %s", get_user)
-    log.info("Fetching post data by User id: %s", get_post)
+
+    async with aiohttp.ClientSession() as session:
+        async with asyncio.TaskGroup() as tg:
+            users_task = tg.create_task(fetch_users_data())
+            posts_task = tg.create_task(fetch_posts_data())
+
+        users = await users_task
+        posts = await posts_task
+
+        # log.info("Fetched users data: %s", users)
+        # log.info("Fetched posts data: %s", posts)
+
+        get_user = await fetch_user_by_id(users, USER_ID)
+        get_posts = await fetch_posts_by_user_id(posts, USER_ID)
+
+        log.info("Fetched user data by User ID: %s", get_user)
+        log.info("Fetched posts data by User ID: %s", get_posts)
 
 
 if __name__ == "__main__":

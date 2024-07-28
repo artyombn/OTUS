@@ -15,15 +15,20 @@
 
 import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
-from models_p.user import User
-from models_p.post import Post
+from sqlalchemy import select
+from models import (
+    User,
+    Post,
+    Base,
+    async_engine,
+    Session,
+)
 
-from models import async_engine, Session
-from models_p.base import Base
-
-
-from sqlalchemy import (
-    select,
+from jsonplaceholder_requests import (
+    USERS_DATA_URL,
+    POSTS_DATA_URL,
+    fetch_users_data,
+    fetch_posts_data,
 )
 
 
@@ -33,32 +38,32 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def create_user(
-    session: AsyncSession,
-    name: str,
-    username: str,
-    email: str | None = None,
-    refresh_after_commit: bool = False,
-) -> User:
-    user = User(name=name, username=username, email=email)
-    session.add(user)
-    await session.commit()
-    if refresh_after_commit:
-        await session.refresh(user)
-    print("created user:", user)
-    return user
+async def fetch_all_data(
+    users_url: str = USERS_DATA_URL,
+    posts_url: str = POSTS_DATA_URL,
+) -> (list[dict], list[dict]):
+    users_data, posts_data = await asyncio.gather(
+        fetch_users_data(users_url), fetch_posts_data(posts_url)
+    )
+    return users_data, posts_data
 
 
-async def create_posts(
-    session: AsyncSession,
-    *titles: str,
-    user_id: int,
-) -> list[Post]:
-    posts = [Post(title=title, user_id=user_id) for title in titles]
+async def create_data(session: AsyncSession):
+    users_data, posts_data = await fetch_all_data()
+
+    users = [
+        User(name=item["name"], username=item["username"], email=item["email"])
+        for item in users_data
+    ]
+    session.add_all(users)
+
+    posts = [
+        Post(title=item["title"], body=item["body"], user_id=item["userId"])
+        for item in posts_data
+    ]
     session.add_all(posts)
+
     await session.commit()
-    print("created posts:", posts)
-    return posts
 
 
 async def fetch_all_users(session: AsyncSession) -> list[User]:
@@ -71,9 +76,7 @@ async def fetch_all_users(session: AsyncSession) -> list[User]:
     return users_list
 
 
-async def fetch_all_posts(
-    session: AsyncSession,
-) -> list[Post]:
+async def fetch_all_posts(session: AsyncSession) -> list[Post]:
     stmt = select(Post).order_by(Post.id)
     res = await session.scalars(stmt)
     posts = res.all()
@@ -83,44 +86,11 @@ async def fetch_all_posts(
     return posts_list
 
 
-async def demo(session: AsyncSession) -> None:
-
-    user_john: User = await create_user(
-        session, "john", "johny", "john@example.com", refresh_after_commit=True
-    )
-    user_sam: User = await create_user(session, "sam", "samsam", "sam@example.com")
-    user_nick: User = await create_user(session, "nick", "sarnick", "nick@example.com")
-
-    await create_posts(
-        session,
-        "Fintech",
-        "Health",
-        "Wealth",
-        user_id=user_sam.id,
-    )
-
-    await create_posts(
-        session,
-        "Love",
-        "Society",
-        "Kids",
-        user_id=user_john.id,
-    )
-
-    await create_posts(
-        session,
-        "Dogs",
-        "Robots",
-        "People",
-        user_id=user_nick.id,
-    )
-
-
 async def async_main():
     await init_db()
 
     async with Session() as session:
-        await demo(session)
+        await create_data(session)
         await fetch_all_users(session)
         await fetch_all_posts(session)
 
